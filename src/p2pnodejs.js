@@ -15,20 +15,15 @@ export class P2PNodejs {
 
     connect(host, port, msg) {
         let socket = net.createConnection(port, host);
+        this.socket = socket;
         socket.on("data", (response) => {
             console.log("Getting data: ", response.toString("utf-8"));
-            let buffer = new Buffer(msg, "utf-8");
-            let out = new Buffer(msg.length + 24);
-            buffer.copy(out, 24);
-            response.write(msg);
-
         }).on("connect", () => {
+            this.socket = socket;
             console.log("Connected");
         }).on("error", (data) => {
           console.log(data);  
         });
-        this.socket = socket;
-        console.log(this.socket);
     }
 
     receive() {
@@ -37,8 +32,10 @@ export class P2PNodejs {
         }
     }
 
-    send(addr, data) {
-
+    sendMessage(data) {
+        let msg = `message: ${data}`;
+        let buffer = new Buffer(msg);
+        this.socket.write(buffer);
     }
 
     //Add address for blocked list
@@ -60,7 +57,7 @@ export class P2PNodejs {
             }
 
             socket.on('data', (data) => {
-                console.log("This is data: ", data);
+                console.log("data: ", data.toString('utf-8'));
             });
 
             socket.end();
