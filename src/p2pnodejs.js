@@ -57,7 +57,8 @@ export class P2PNodejs {
             }
 
             socket.on('data', (data) => {
-                console.log("data: ", data.toString('utf-8'));
+                let show = `${addr} : ${data.toString('utf-8')}`;
+                console.log(show);
             });
 
             socket.end();
