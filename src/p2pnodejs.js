@@ -15,9 +15,11 @@ export class P2PNodejs {
     connect(host, port, msg) {
         let socket = net.createConnection(port, host);
         socket.on("data", (response) => {
-            console.log("Getting data: ", response);
-            let buffer = new Buffer("Weather");
-            response.write(buffer);
+            console.log("Getting data: ", response.toString("utf-8"));
+            let buffer = new Buffer(msg, "utf-8");
+            let out = new Buffer(msg.length + 24);
+            buffer.copy(out, 24);
+            response.write(msg, null);
 
         }).on("connect", () => {
             console.log("Connected");
@@ -40,8 +42,10 @@ export class P2PNodejs {
     }
 
     startServer(host='127.0.0.1', port=12345) {
-        let server = net.createServer(socket => {
-            socket.write("Server");
+        let server = net.createServer((socket) => {
+            console.log(socket.remoteAddress, socket.remotePort);
+            socket.write("Listen connections: ");
+            socket.end();
         });
 
         server.listen(port, host); 
