@@ -40,6 +40,9 @@ export class P2PNodejs {
 
     //Add address for blocked list
     addBlocked(items) {
+        if(items.length === 0) {
+            return;
+        }
         for(let item in items) {
             this.blocked.set(item,1);
         }
