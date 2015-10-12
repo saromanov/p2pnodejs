@@ -2,8 +2,9 @@ import net from 'net';
 import events from 'events';
 
 
-export class P2PNodejs {
+export class P2PNodejs extends events.EventEmitter{
     constructor(name){
+        super();
         this.name = name;
 
         //list of known addresses
@@ -11,10 +12,6 @@ export class P2PNodejs {
         this.blocked = new Map();
 
         this.socket = undefined;
-        this.emitter = new events.EventEmitter();
-        /*this.emitter.addListener('message', (data) => {
-            console.log(`New Message: ${data}`);
-        });*/
     }
 
     connect(host, port, msg) {
@@ -52,10 +49,6 @@ export class P2PNodejs {
         }
     }
 
-    on(name, func) {
-        this.emitter.addListener(name, func);
-    }
-
     startServer(host='127.0.0.1', port=12345) {
         let server = net.createServer((socket) => {
             let addr = `${socket.remoteAddress}:${socket.remotePort}`;
@@ -69,7 +62,7 @@ export class P2PNodejs {
 
             socket.on('data', (data) => {
                 let show = `${addr} : ${data.toString('utf-8')}`;
-                this.emitter.emit('message', show);
+                this.emit('message', show);
             });
 
             socket.end();
