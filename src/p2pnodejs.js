@@ -1,5 +1,6 @@
 import net from 'net';
 import events from 'events';
+import uuid from 'node-uuid';
 
 
 export class P2PNodejs extends events.EventEmitter{
@@ -47,6 +48,10 @@ export class P2PNodejs extends events.EventEmitter{
         for(let item in items) {
             this.blocked.set(item,1);
         }
+    }
+
+    genUUID() {
+        return uuid.v4();
     }
 
     startServer(host='127.0.0.1', port=12345) {

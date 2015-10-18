@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/saromanov/p2pnodejs#readme",
   "dependencies": {
-    "core-js": "*"
+    "core-js": "*",
+    "node-uuid": "*"
   },
   "devDependencies": {
     "babel": "*",
