@@ -69,6 +69,13 @@ export class P2PNodejs extends events.EventEmitter{
             socket.on('data', (data) => {
                 let show = `${addr} : ${data.toString('utf-8')}`;
                 this.emit('message', show);
+            }).on('connect', () => {
+                console.log("Join");
+            }).on('end', () => {
+                let keys = this.known.keys();
+                keys.forEach(data => {
+                    this.sendMessage(`Leave: ${host}: {port}`);
+                });
             });
 
             socket.end();
