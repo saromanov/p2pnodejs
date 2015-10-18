@@ -50,6 +50,7 @@ export class P2PNodejs extends events.EventEmitter{
     }
 
     startServer(host='127.0.0.1', port=12345) {
+        console.log(`Start listen on ${host}:${port}`);
         let server = net.createServer((socket) => {
             let addr = `${socket.remoteAddress}:${socket.remotePort}`;
             if(this.blocked.hasOwnProperty(addr)) {
